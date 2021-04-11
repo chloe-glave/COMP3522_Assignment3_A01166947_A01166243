@@ -1,12 +1,13 @@
 # Object Oriented Pokedex
 
-this will be a cool project
+Welcome to the Pokedex! Here, you can request data about Pokemon, moves, abilities, and more!
 
-Don't forget to fill out readme this time lol
+Makes use of argparse Python module and PokeAPI.
 
 ## Contributors
 ### [Chloe Glave](https://github.com/Cragzu) - A01166947
-* Stuff I did
+* Developed argument parsing using argparse module
+* Created UML diagram to model classes
 
 ### [Janelle Kwok](https://github.com/Jkcadee) - A01166243
-* Stuff I did
+* Implemented modules to interact with the PokeAPI to retrieve data
