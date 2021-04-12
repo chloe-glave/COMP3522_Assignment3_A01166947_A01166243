@@ -31,9 +31,10 @@ async def generate_pokemon(poke_request, data):
     :param data: JSON object containing API data
     :return: Pokemon
     """
+
     list_of_abilities = []
-    list_of_moves = []
     list_of_stats = []
+    list_of_moves = [moves["move"]["name"]for moves in data["moves"]]
     if poke_request.is_expanded:
         try:
             for ability in data["abilities"]:
@@ -60,15 +61,12 @@ async def generate_pokemon(poke_request, data):
         list_of_abilities = [ability["ability"]["name"] for ability in data["abilities"]]
         list_of_stats = {stat["stat"]["name"]: str(stat["base_stat"]) for stat in data["stats"]}
 
-    # print(list_of_abilities)
-
     return Pokemon(height=data["height"],
                    weight=data["weight"],
                    stats=list_of_stats,
                    types=[types["type"]["name"] for types in data["types"]],
                    abilities=list_of_abilities,
-                   moves=[moves["move"] if poke_request.is_expanded else moves["move"]["name"]
-                          for moves in data["moves"]],
+                   moves=list_of_moves,
                    id=data["id"],
                    name=data["name"])
 

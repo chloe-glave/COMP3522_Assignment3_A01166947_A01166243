@@ -11,6 +11,7 @@ class Pokemon(PokedexObject):
         self.types = types
         self.abilities = abilities
         self.moves = moves
+        print(self.moves)
 
     def __str__(self):
         if type(self.stats) is dict:
@@ -21,7 +22,7 @@ class Pokemon(PokedexObject):
 
         abilities_string = "\n-------\n" + "\n".join(self.abilities) + "\n-------"
 
-        # moves_string = "\n-------\n" + "\n".join(self.moves) + "\n-------"
+        moves_string = "\n-------\n" + "\n".join(self.moves) + "\n-------"
 
         types_string = ", ".join(self.types)
 
@@ -33,4 +34,4 @@ class Pokemon(PokedexObject):
                f"Types: {types_string}\n" \
                f"Stats: {stats_string}\n" \
                f"Abilities: {abilities_string}\n" \
-               f"Moves: {self.moves}"
+               f"Moves: {moves_string}"
