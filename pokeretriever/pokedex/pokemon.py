@@ -12,6 +12,14 @@ class Pokemon(PokedexObject):
         self.abilities = abilities
         self.moves = moves
 
+    def _print_abilities(self):
+        """
+        Prints out Abilities in the abilities list.
+        :return: None
+        """
+        for ability in self.abilities:
+            print(ability.__str__())
+
     def __str__(self):
         return f"Pokemon:\n" \
                f"Name: {self.name}\n" \
@@ -20,5 +28,5 @@ class Pokemon(PokedexObject):
                f"Weight: {self.weight}\n" \
                f"Stats: {self.stats}\n" \
                f"Type: {self.types}\n" \
-               f"Abilities: {self.abilities}\n" \
+               f"Abilities: {self._print_abilities()}\n" \
                f"Moves: {self.moves}"

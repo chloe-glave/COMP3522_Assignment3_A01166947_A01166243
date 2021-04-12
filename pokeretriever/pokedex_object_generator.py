@@ -1,3 +1,5 @@
+import aiohttp
+
 from .pokedex.pokedex_object import PokedexObject
 from .pokedex.ability import Ability
 from .pokedex.pokemon import Pokemon
@@ -5,7 +7,7 @@ from .pokedex.move import Move
 from .pokedex.stat import Stat
 
 
-def generate_pokedex_object(poke_request, data) -> PokedexObject:
+async def generate_pokedex_object(poke_request, data) -> PokedexObject:
     """
     Creates a PokedexObject based on the request grabbed for it.
     :param poke_request: Request representing the object to create.
@@ -13,7 +15,7 @@ def generate_pokedex_object(poke_request, data) -> PokedexObject:
     :return: PokedexObject
     """
     if poke_request.mode == "pokemon":
-        return generate_pokemon(poke_request, data)  # currently only pokemon support expanded mode
+        return await generate_pokemon(poke_request, data)  # currently only pokemon support expanded mode
     elif poke_request.mode == "ability":
         return generate_ability(data)
     elif poke_request.mode == "move":
@@ -22,19 +24,34 @@ def generate_pokedex_object(poke_request, data) -> PokedexObject:
         return generate_stat(data)
 
 
-def generate_pokemon(poke_request, data):
+async def generate_pokemon(poke_request, data):
     """
     Generate a Pokemon object based on API data.
     :param poke_request: Request, used to determine expanded mode status
     :param data: JSON object containing API data
     :return: Pokemon
     """
+    list_of_abilities = []
+    if poke_request.is_expanded:
+        try:
+            for ability in data["abilities"]:
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(ability["ability"]["url"]) as response:
+                        ability_data = await response.json()
+                        new_ability = generate_ability(ability_data)
+                        list_of_abilities.append(new_ability)
+                    await session.close()
+        except Exception as e:
+            print(e)
+
     return Pokemon(height=data["height"],
                    weight=data["weight"],
                    stats=data["stats"],
                    types=[types["type"]["name"] for types in data["types"]],
-                   abilities=[abilities if poke_request.is_expanded
-                              else abilities["ability"]["name"] for abilities in data["abilities"]],
+                   abilities=
+                   list_of_abilities if poke_request.is_expanded else [abilities if poke_request.is_expanded
+                                                                       else abilities["ability"]["name"] for abilities
+                                                                       in data["abilities"]],
                    moves=[moves["move"] if poke_request.is_expanded else moves["move"]["name"]
                           for moves in data["moves"]],
                    id=data["id"],

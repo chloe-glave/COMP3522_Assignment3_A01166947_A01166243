@@ -24,4 +24,4 @@ class PokeRetriever:
                 await session.close()
         except Exception as e:
             print(e)
-        return generate_pokedex_object(self.poke_request, data)
+        return await generate_pokedex_object(self.poke_request, data)
