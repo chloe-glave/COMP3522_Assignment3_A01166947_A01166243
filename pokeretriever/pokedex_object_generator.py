@@ -39,19 +39,20 @@ async def generate_pokemon(poke_request, data):
                     async with session.get(ability["ability"]["url"]) as response:
                         ability_data = await response.json()
                         new_ability = generate_ability(ability_data)
-                        list_of_abilities.append(new_ability)
+                        list_of_abilities.append(new_ability.__str__())
                     await session.close()
         except Exception as e:
             print(e)
+    else:
+        list_of_abilities = [ability["ability"]["name"] for ability in data["abilities"]]
+
+    # print(list_of_abilities)
 
     return Pokemon(height=data["height"],
                    weight=data["weight"],
                    stats=data["stats"],
                    types=[types["type"]["name"] for types in data["types"]],
-                   abilities=
-                   list_of_abilities if poke_request.is_expanded else [abilities if poke_request.is_expanded
-                                                                       else abilities["ability"]["name"] for abilities
-                                                                       in data["abilities"]],
+                   abilities=list_of_abilities,
                    moves=[moves["move"] if poke_request.is_expanded else moves["move"]["name"]
                           for moves in data["moves"]],
                    id=data["id"],
