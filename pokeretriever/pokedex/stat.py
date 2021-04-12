@@ -7,7 +7,7 @@ class Stat(PokedexObject):
         self.is_battle_only = is_battle_only
 
     def __str__(self):
-        return f"Pokemon:\n" \
+        return f"Stat:\n" \
                f"Name: {self.name}\n" \
                f"ID: {self.id}\n" \
-               f"Height: {self.is_battle_only}\n"
+               f"Is battle only?: {self.is_battle_only}\n"

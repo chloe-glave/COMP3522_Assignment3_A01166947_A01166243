@@ -14,12 +14,12 @@ class Move(PokedexObject):
         self.effect_short = effect_short
 
     def __str__(self):
-        return f"Pokemon:\n" \
+        return f"Move:\n" \
                f"Name: {self.name}\n" \
                f"ID: {self.id}\n" \
-               f"Height: {self.accuracy}\n" \
-               f"Weight: {self.pp}\n" \
-               f"Stats: {self.power}\n" \
+               f"Accuracy: {self.accuracy}\n" \
+               f"PP: {self.pp}\n" \
+               f"Power: {self.power}\n" \
                f"Type: {self.type}\n" \
-               f"Abilities: {self.damage_class}" \
-               f"Moves: {self.effect_short}"
+               f"Damage class: {self.damage_class}" \
+               f"Effect: {self.effect_short}"
