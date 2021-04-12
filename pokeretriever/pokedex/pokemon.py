@@ -13,12 +13,22 @@ class Pokemon(PokedexObject):
         self.moves = moves
 
     def __str__(self):
+
+        abilities_string = "\n-------\n" + "\n".join(self.abilities) + "\n-------"
+        moves_string = "\n-------\n" + "\n".join(self.moves) + "\n-------"
+        types_string = ", ".join(self.types)
+
+        stats_string = "\n-------"
+        for stat in self.stats:
+            stats_string += ("\n" + stat["stat"]["name"] + ", " + str(stat["base_stat"]))
+        stats_string += "\n-------"
+
         return f"Pokemon:\n" \
                f"Name: {self.name}\n" \
                f"ID: {self.id}\n" \
                f"Height: {self.height}\n" \
                f"Weight: {self.weight}\n" \
-               f"Stats: {self.stats}\n" \
-               f"Type: {self.types}\n" \
-               f"Abilities: {self.abilities}\n" \
-               f"Moves: {self.moves}"
+               f"Types: {types_string}\n" \
+               f"Stats: {stats_string}\n" \
+               f"Abilities: {abilities_string}\n" \
+               f"Moves: {moves_string}"
