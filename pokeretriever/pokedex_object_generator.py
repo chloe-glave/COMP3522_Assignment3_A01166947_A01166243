@@ -5,35 +5,48 @@ from .pokedex.move import Move
 from .pokedex.stat import Stat
 
 
-def generate_pokedex_object(request_mode, data) -> PokedexObject:
+def generate_pokedex_object(poke_request, data) -> PokedexObject:
     """
     Creates a PokedexObject based on the request grabbed for it.
-    :param request_mode: string representing the object to create.
+    :param poke_request: Request representing the object to create.
     :param data: JSON object containing Pokedex data from API.
     :return: PokedexObject
     """
-    if request_mode == "pokemon":
-        return generate_pokemon(data)
-    elif request_mode == "ability":
+    if poke_request.mode == "pokemon":
+        return generate_pokemon(poke_request, data)  # currently only pokemon support expanded mode
+    elif poke_request.mode == "ability":
         return generate_ability(data)
-    elif request_mode == "move":
+    elif poke_request.mode == "move":
         return generate_move(data)
-    elif request_mode == "stat":
+    elif poke_request.mode == "stat":
         return generate_stat(data)
 
 
-def generate_pokemon(data):
+def generate_pokemon(poke_request, data):
+    """
+    Generate a Pokemon object based on API data.
+    :param poke_request: Request, used to determine expanded mode status
+    :param data: JSON object containing API data
+    :return: Pokemon
+    """
     return Pokemon(height=data["height"],
                    weight=data["weight"],
                    stats=data["stats"],
                    types=[types["type"]["name"] for types in data["types"]],
-                   abilities=data["abilities"],
-                   moves=[moves["move"] for moves in data["moves"]],
+                   abilities=[abilities if poke_request.is_expanded
+                              else abilities["ability"]["name"] for abilities in data["abilities"]],
+                   moves=[moves["move"] if poke_request.is_expanded else moves["move"]["name"]
+                          for moves in data["moves"]],
                    id=data["id"],
                    name=data["name"])
 
 
 def generate_ability(data):
+    """
+    Generate an Ability object based on API data.
+    :param data: JSON object containing API data
+    :return: Ability
+    """
     return Ability(generation=data["generation"]["name"],
                    effect=data["effect_entries"][1]["effect"],
                    effect_short=data["effect_entries"][1]["short_effect"],
@@ -43,6 +56,11 @@ def generate_ability(data):
 
 
 def generate_move(data):
+    """
+    Generate a Move object based on API data.
+    :param data: JSON object containing API data
+    :return: Move
+    """
     return Move(id=data["id"],
                 name=data["name"],
                 generation=data["generation"]["name"],
@@ -55,6 +73,11 @@ def generate_move(data):
 
 
 def generate_stat(data):
+    """
+    Generate a Stat object based on API data.
+    :param data: JSON object containing API data
+    :return: Stat
+    """
     return Stat(id=data["id"],
                 name=data["name"],
                 is_battle_only=data["is_battle_only"])
