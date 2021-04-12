@@ -5,7 +5,6 @@ from .pokedex.pokemon import Pokemon
 from .pokedex.move import Move
 from .pokedex.stat import Stat
 import aiohttp
-import asyncio
 
 
 class PokeRetriever:
@@ -14,7 +13,7 @@ class PokeRetriever:
 
     def __init__(self):
         self.poke_request = Request()
-        print(self.poke_request)
+        print(self.poke_request)  # todo: for testing, remove later
 
     async def execute_request(self) -> PokedexObject:
         """
