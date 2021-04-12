@@ -21,6 +21,16 @@ class Pokemon(PokedexObject):
             print(ability.__str__())
 
     def __str__(self):
+
+        abilities_string = "\n-------\n" + "\n".join(self.abilities) + "\n-------"
+        moves_string = "\n-------\n" + "\n".join(self.moves) + "\n-------"
+        types_string = ", ".join(self.types)
+
+        stats_string = "\n-------"
+        for stat in self.stats:
+            stats_string += ("\n" + stat["stat"]["name"] + ", " + str(stat["base_stat"]))
+        stats_string += "\n-------"
+
         return f"Pokemon:\n" \
                f"Name: {self.name}\n" \
                f"ID: {self.id}\n" \
