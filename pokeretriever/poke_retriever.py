@@ -36,12 +36,15 @@ class PokeRetriever:
         :return: PokedexObject
         """
         if self.poke_request.mode == "pokemon":
+
             return Pokemon(height=data["height"],
                            weight=data["weight"],
                            stats=data["stats"],
                            types=[types["type"]["name"] for types in data["types"]],
-                           abilities=data["abilities"],
-                           moves=[moves["move"] for moves in data["moves"]],
+                           abilities=[abilities if self.poke_request.is_expanded
+                                      else abilities["ability"]["name"] for abilities in data["abilities"]],
+                           moves=[moves["move"] if self.poke_request.is_expanded else moves["move"]["name"]
+                                  for moves in data["moves"]],
                            id=data["id"],
                            name=data["name"])
         elif self.poke_request.mode == "ability":
