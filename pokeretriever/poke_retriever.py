@@ -1,9 +1,9 @@
-from request import Request
-from pokedex.pokedex_object import PokedexObject
-from pokedex.ability import Ability
-from pokedex.pokemon import Pokemon
-from pokedex.move import Move
-from pokedex.stat import Stat
+from .request import Request
+from .pokedex.pokedex_object import PokedexObject
+from .pokedex.ability import Ability
+from .pokedex.pokemon import Pokemon
+from .pokedex.move import Move
+from .pokedex.stat import Stat
 import aiohttp
 import asyncio
 
@@ -13,25 +13,18 @@ class PokeRetriever:
     API_REQUEST_URL = "https://pokeapi.co/api/v2/{}/{}"
 
     def __init__(self):
-        self.poke_request = None
-
-    async def get_request(self):
-        """
-        Get Pokemon data and return a request built with that data.
-        :return: Request
-        """
         self.poke_request = Request()
+        print(self.poke_request)
 
     async def execute_request(self) -> PokedexObject:
         """
         Executes the request and returns a corresponding PokedexObject based on the request.
-        :param request: Request
         :return: PokedexObject
         """
         try:
             async with aiohttp.ClientSession() as session:
-                async with session.get(PokeRetriever.API_REQUEST_URL.format("pokemon",
-                                                                            "bulbasaur")) as response:
+                async with session.get(PokeRetriever.API_REQUEST_URL.format(self.poke_request.mode,
+                                                                            self.poke_request.input_data)) as response:
                     data = await response.json()
                 await session.close()
         except Exception as e:
@@ -73,13 +66,3 @@ class PokeRetriever:
             return Stat(id=data["id"],
                         name=data["name"],
                         is_battle_only=data["is_battle_only"])
-
-
-# for testing :)
-async def main():
-    poke = PokeRetriever()
-    print(await poke.execute_request())
-
-loop = asyncio.get_event_loop()
-loop.run_until_complete(main())
-
