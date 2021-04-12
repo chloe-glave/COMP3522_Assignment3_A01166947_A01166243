@@ -32,6 +32,8 @@ async def generate_pokemon(poke_request, data):
     :return: Pokemon
     """
     list_of_abilities = []
+    list_of_moves = []
+    list_of_stats = []
     if poke_request.is_expanded:
         try:
             for ability in data["abilities"]:
@@ -43,14 +45,26 @@ async def generate_pokemon(poke_request, data):
                     await session.close()
         except Exception as e:
             print(e)
+
+        try:
+            for stat in data["stats"]:
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(stat["stat"]["url"]) as response:
+                        stat_data = await response.json()
+                        new_stat = generate_stat(stat_data)
+                        list_of_stats.append(new_stat.__str__())
+                    await session.close()
+        except Exception as e:
+            print(e)
     else:
         list_of_abilities = [ability["ability"]["name"] for ability in data["abilities"]]
+        list_of_stats = {stat["stat"]["name"]: str(stat["base_stat"]) for stat in data["stats"]}
 
     # print(list_of_abilities)
 
     return Pokemon(height=data["height"],
                    weight=data["weight"],
-                   stats=data["stats"],
+                   stats=list_of_stats,
                    types=[types["type"]["name"] for types in data["types"]],
                    abilities=list_of_abilities,
                    moves=[moves["move"] if poke_request.is_expanded else moves["move"]["name"]

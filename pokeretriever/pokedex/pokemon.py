@@ -13,15 +13,17 @@ class Pokemon(PokedexObject):
         self.moves = moves
 
     def __str__(self):
+        if type(self.stats) is dict:
+            stats_string = "\n-------\n" + '\n'.join(': '.join((key,val)) for (key,val) in self.stats.items()) \
+                           + "\n-------"
+        else:
+            stats_string = "\n-------\n" + "\n".join(self.stats) + "\n-------"
 
         abilities_string = "\n-------\n" + "\n".join(self.abilities) + "\n-------"
-        # moves_string = "\n-------\n" + "\n".join(self.moves) + "\n-------"
-        types_string = ", ".join(self.types)
 
-        stats_string = "\n-------"
-        for stat in self.stats:
-            stats_string += ("\n" + stat["stat"]["name"] + ", " + str(stat["base_stat"]))
-        stats_string += "\n-------"
+        # moves_string = "\n-------\n" + "\n".join(self.moves) + "\n-------"
+
+        types_string = ", ".join(self.types)
 
         return f"Pokemon:\n" \
                f"Name: {self.name}\n" \
