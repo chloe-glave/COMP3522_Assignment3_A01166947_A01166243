@@ -20,5 +20,5 @@ class Pokemon(PokedexObject):
                f"Weight: {self.weight}\n" \
                f"Stats: {self.stats}\n" \
                f"Type: {self.types}\n" \
-               f"Abilities: {self.abilities}" \
+               f"Abilities: {self.abilities}\n" \
                f"Moves: {self.moves}"
