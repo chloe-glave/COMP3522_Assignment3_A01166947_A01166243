@@ -24,6 +24,23 @@ async def generate_pokedex_object(poke_request, data) -> PokedexObject:
         return generate_stat(data)
 
 
+async def get_moves(data):
+    """
+    Gets the moves of a Pokemon from a list of moves from the Pokemon JSON data. Returns a list of Moves.
+    :param data: Dict
+    :return: List of Moves
+    """
+    list_of_moves = []
+    for moves in data["moves"]:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(moves["move"]["url"]) as response:
+                move_data = await response.json()
+                new_move = generate_move(move_data)
+                list_of_moves.append(new_move.__str__())
+            await session.close()
+    return list_of_moves
+
+
 async def generate_pokemon(poke_request, data):
     """
     Generate a Pokemon object based on API data.
@@ -57,6 +74,12 @@ async def generate_pokemon(poke_request, data):
                     await session.close()
         except Exception as e:
             print(e)
+
+        try:
+            list_of_moves = await get_moves(data)
+        except Exception as e:
+            print(e)
+
     else:
         list_of_abilities = [ability["ability"]["name"] for ability in data["abilities"]]
         list_of_stats = {stat["stat"]["name"]: str(stat["base_stat"]) for stat in data["stats"]}
@@ -66,6 +89,7 @@ async def generate_pokemon(poke_request, data):
                    stats=list_of_stats,
                    types=[types["type"]["name"] for types in data["types"]],
                    abilities=list_of_abilities,
+
                    moves=list_of_moves,
                    id=data["id"],
                    name=data["name"])

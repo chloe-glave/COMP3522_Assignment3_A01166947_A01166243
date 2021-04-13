@@ -21,5 +21,5 @@ class Move(PokedexObject):
                f"PP: {self.pp}\n" \
                f"Power: {self.power}\n" \
                f"Type: {self.type}\n" \
-               f"Damage class: {self.damage_class}" \
-               f"Effect: {self.effect_short}"
+               f"Damage class: {self.damage_class}\n" \
+               f"Effect: {self.effect_short}\n"
