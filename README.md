@@ -11,3 +11,4 @@ Makes use of argparse Python module and PokeAPI.
 
 ### [Janelle Kwok](https://github.com/Jkcadee) - A01166243
 * Implemented modules to interact with the PokeAPI to retrieve data
+* Developed nested calls to different modules for Pokemon's expanded and non-expanded mode

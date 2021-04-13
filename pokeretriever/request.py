@@ -11,6 +11,9 @@ class Request:
         self.output_file = None
         self.setup_request_commandline()
 
+        if self.input_file:
+            self.read_input_file()
+
     def setup_request_commandline(self):
         """
         Implements the argparse module to accept arguments via the command
@@ -49,6 +52,15 @@ class Request:
         except Exception as e:
             print(f"Error! Could not read arguments.\n{e}")
             quit()
+
+    def read_input_file(self):
+        """
+        If the --inputfile flag is given, read input text from file.
+        :return: None
+        """
+        with open(self.input_file, mode='r', encoding='utf-8') as file:
+            self.input_data = file.readlines()
+
 
     def __str__(self):
         return f"Request:\n" \
