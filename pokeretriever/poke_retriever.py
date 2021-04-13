@@ -24,4 +24,28 @@ class PokeRetriever:
                 await session.close()
         except Exception as e:
             print(e)
-        return await generate_pokedex_object(self.poke_request, data)
+
+        output_object = await generate_pokedex_object(self.poke_request, data)
+
+        if self.poke_request.output_file:
+            self.write_output_to_file(output_object)
+        else:
+            print(output_object)
+
+    def write_output_to_file(self, pokedex_object):
+        """
+        File IO for writing output to a text file.
+        :param pokedex_object: PokedexObject, the data to write to the file
+        :return: None
+        """
+        try:
+            output_text_file = open(self.poke_request.output_file, 'w', encoding='UTF-8')
+
+            output_text_file.write(pokedex_object.__str__())
+
+            output_text_file.close()
+            print(f"Output written to {self.poke_request.output_file}. Have a nice day!")
+        except IOError:
+            print("Error with writing to text file, exiting program.")
+        finally:
+            exit(0)

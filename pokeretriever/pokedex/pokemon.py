@@ -11,7 +11,6 @@ class Pokemon(PokedexObject):
         self.types = types
         self.abilities = abilities
         self.moves = moves
-        print(self.moves)
 
     def __str__(self):
         if type(self.stats) is dict:
